@@ -13,6 +13,7 @@ class FieldStrategy(ABC):
         pass
 
 
+
 class SummaryStrategy(FieldStrategy):
     def create(self, issue: dict) -> dict | None:
         return {"summary": issue.get("title", "No title")}

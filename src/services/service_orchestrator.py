@@ -23,15 +23,15 @@ class ServiceOrchestrator:
         self.project_id = project_id
 
 
-    def find_existing_issue_id(self, summary: str):
+    def find_existing_issue_id(self, number: int):
         """Searches for an issue by summary text"""
-        return self.issue_service.find_existing_issue_id(summary)
+        return self.issue_service.find_existing_issue_id(number)
 
-    def get_issue(self, yt_id: str):
+    def get_issue(self, yt_id: str) -> dict:
         """Fetches an existing issue by its YouTrack ID"""
         return self.issue_service.get_issue(yt_id)
 
-    def update_issue(self, current: dict, new_issue: dict, yt_id: str):
+    def update_issue(self, current: dict, new_issue: dict, yt_id: str) -> dict:
         """
         Ensures assignee is valid before updating an issue.
         Passes the prepared issue to IssueService.
@@ -39,7 +39,7 @@ class ServiceOrchestrator:
         new_issue = self._prepare_assignee(new_issue)
         return self.issue_service.update_issue(current, new_issue, yt_id)
 
-    def create_issue(self, issue: dict):
+    def create_issue(self, issue: dict) -> dict:
         """
         Ensures assignee is valid before creating an issue.
         Passes the prepared issue to IssueService.

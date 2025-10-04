@@ -28,17 +28,18 @@ class BaseMapper:
             f"---\n\n{body}"
         )
 
-
     @classmethod
-    def get_existing_issue_id(self, yt_client, project_short: str, summary: str) -> str | None:
-        """Search for existing issue on YouTruck"""
+    def get_existing_issue_id(cls, yt_client, project_short: str, number: int) -> str | None:
+        """Search for existing issue in YouTrack by issue number"""
         try:
-            query = f'project: {project_short} summary: "{summary}"'
-            issues = yt_client.search_issues(query=query, fields="id,summary", top=1)
+            query = f'project: {project_short} number: {number}'
+            issues = yt_client.search_issues(query=query, fields="id, idReadable, summury", top=1)
             if issues:
-                return issues[0]["id"]
+                return issues[0].get("id")
             return None
         except Exception as e:
             log.error(f"Greška pri pretrazi issues: {e}")
             return None
+
+
 

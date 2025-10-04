@@ -40,6 +40,7 @@ class IssueSynchronizer:
         while True:
             try:
                 issues = self.gh.fetch_issues(repo, state=state)
+                # pprint.pprint(issues)
                 if limit:
                     issues = issues[:limit]
 
@@ -72,18 +73,14 @@ class IssueSynchronizer:
 
         Determines whether the issue already exists in YouTrack and
         updates it if necessary, or creates a new one.
-
-        Args:
-           issue (dict): GitHub issue data.
-
-        Returns:
-            None
         """
-        summary = issue.get("title", "")
-        yt_id = self.orchestrator.find_existing_issue_id(summary)
+        github_issue_number = issue.get("number")
+        yt_id = self.orchestrator.find_existing_issue_id(github_issue_number)
 
         if yt_id:
             current = self.orchestrator.get_issue(yt_id)
             self.orchestrator.update_issue(current, issue, yt_id)
         else:
-            self.orchestrator.create_issue(issue)
+            res = self.orchestrator.create_issue(issue)
+            if res:
+                log.info(f"Created issue with ID-{res['id']}")

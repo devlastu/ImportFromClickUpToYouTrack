@@ -81,13 +81,19 @@ class IssueService:
             log.error(f"Error getting issue ID-{yt_id}: {e}")
             return None
 
-    def find_existing_issue_id(self, summary: str) -> Optional[str]:
+    def find_existing_issue_id(self, number: int) -> Optional[str]:
         """
         Finds the ID of an existing issue based on its summary.
+
+        Args:
+            summary (str): Summary text of the issue.
+
+        Returns:
+            Optional[str]: ID of the existing issue if found, otherwise None.
         """
         try:
-            return self.mapper.get_existing_issue_id(self.yt, self.project_short, summary)
+            return self.mapper.get_existing_issue_id(self.yt, self.project_short, number=number)
         except Exception as e:
-            log.error(f"Error finding issue '{summary}': {e}")
+            log.error(f"Error finding issue '{number}': {e}")
             return None
 
